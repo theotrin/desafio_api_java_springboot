@@ -1,0 +1,3 @@
+INSERT INTO CLIENTS (name, cpf, income, birth_Date, children) VALUES ('Monkey D Luffy', '300000000', 3338091, TIMESTAMP WITH TIME ZONE '2020-07-13T20:50:07.12345Z', 0);
+INSERT INTO CLIENTS (name, cpf, income, birth_Date, children) VALUES ('Roronoa Zoro', '489356842', 0, TIMESTAMP WITH TIME ZONE '2020-07-13T20:50:07.12345Z', 0);
+INSERT INTO CLIENTS (name, cpf, income, birth_Date, children) VALUES ('Charlote LinLin', '489356842', 7778091, TIMESTAMP WITH TIME ZONE '2020-07-13T20:50:07.12345Z', 23);
