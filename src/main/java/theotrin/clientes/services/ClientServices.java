@@ -1,11 +1,13 @@
 package theotrin.clientes.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import theotrin.clientes.dto.ClientDTO;
 import theotrin.clientes.entities.Client;
 import theotrin.clientes.repositories.ClientRepository;
-import theotrin.clientes.services.exceptions.EntityNotFoundException;
+import theotrin.clientes.services.exceptions.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +30,7 @@ public class ClientServices {
     public ClientDTO findOne(Long id) {
         Optional<Client> optional = repository.findById(id);
 
-        Client entity = optional.orElseThrow(() -> new EntityNotFoundException("Client not found"));
+        Client entity = optional.orElseThrow(() -> new ResourceNotFoundException("Client not found"));
 
         return new ClientDTO(entity);
     }
@@ -42,10 +44,17 @@ public class ClientServices {
         return new ClientDTO(entity);
     }
 
-
-
-
-
+    @Transactional
+    public ClientDTO update(Long id, ClientDTO dto) {
+        try{
+            Client entity = repository.getOne(id);
+            copyToEntity(dto, entity);
+            repository.save(entity);
+            return new ClientDTO(entity);
+        } catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException("Id not found");
+        }
+    }
 
     private void copyToEntity(ClientDTO dto, Client entity){
         entity.setName(dto.getName());
@@ -53,5 +62,17 @@ public class ClientServices {
         entity.setIncome(dto.getIncome());
         entity.setBirthDate(dto.getBirthDate());
         entity.setChildren(dto.getChildren());
+    }
+
+    public void delete(Long id) {
+        try{
+            if (!repository.existsById(id)) {
+                throw new ResourceNotFoundException("Id not found");
+            }
+            repository.deleteById(id);
+
+        } catch (EntityNotFoundException e){
+            throw new ResourceNotFoundException("Id not found");
+        }
     }
 }
