@@ -23,6 +23,12 @@ public class ClientResources {
         List<ClientDTO> clientList = service.findAll();
         return ResponseEntity.ok().body(clientList);
     }
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<ClientDTO> find(@PathVariable Long id) {
+        ClientDTO clientFounded = service.findOne(id);
+
+        return ResponseEntity.ok().body(clientFounded);
+    }
 
     @PostMapping
     public ResponseEntity<ClientDTO> create(@RequestBody ClientDTO dto){
